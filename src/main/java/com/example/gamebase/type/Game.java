@@ -17,6 +17,7 @@ public class Game {
     private String producer;
     private LocalDate releaseDate;
     private List<PlatformType> platforms;
+    private List<GameRating> ratings;
 
 
 
