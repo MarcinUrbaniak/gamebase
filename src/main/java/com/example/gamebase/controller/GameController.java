@@ -17,11 +17,12 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 public class GameController {
 
-    private final static String GAME_ID_PARAM_NAME = "bookID";
+    private final static String GAME_ID_PARAM_NAME = "gameId";
     private GameStorage gameStorage = new StaticListGameStorageImpl();
 
     public Response serveGetGameRequest(IHTTPSession session){
         Map<String, List<String>> requestParameters = session.getParameters();
+        System.out.println(requestParameters.toString());
         if(requestParameters.containsKey(GAME_ID_PARAM_NAME)){
             List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
             String gameParam = gameIdParams.get(0);
@@ -67,12 +68,12 @@ public class GameController {
         ObjectMapper objectMapper = new ObjectMapper();
         long randomGameId = System.currentTimeMillis();
 
-        String lengthHeader = session.getHeaders().get("content-lenght");
-        int contentLenght = Integer.parseInt(lengthHeader);
-        byte[] buffer = new byte[contentLenght];
+        String lengthHeader = session.getHeaders().get("content-length");
+        int contentLength = Integer.parseInt(lengthHeader);
+        byte[] buffer = new byte[contentLength];
 
         try {
-            session.getInputStream().read(buffer,0, contentLenght);
+            session.getInputStream().read(buffer,0, contentLength);
             String requestBody = new String(buffer).trim();
             Game requestGame = objectMapper.readValue(requestBody, Game.class);
             requestGame.setId(randomGameId);
