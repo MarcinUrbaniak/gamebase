@@ -25,15 +25,7 @@ public class GameController {
     public Response serveGetGameRequest(IHTTPSession session){
         Map<String, List<String>> requestParameters = session.getParameters();
         if(requestParameters.containsKey(GAME_ID_PARAM_NAME)){
-            List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
-            String gameParam = gameIdParams.get(0);
-            long gameId = 0;
-
-            try {
-                gameId = Long.parseLong(gameParam);
-            }catch (NumberFormatException e){
-                System.err.println("Error during convert request param: \n" + e);
-            }
+            long gameId = getGameId(requestParameters);
             Game game = gameStorage.getGame(gameId);
             if(game != null){
                 try {
@@ -89,15 +81,7 @@ public class GameController {
     public Response serveAddReviewRequest(IHTTPSession session){
         Map<String, List<String>> requestParameters = session.getParameters();
         if(requestParameters.containsKey(GAME_ID_PARAM_NAME)){
-            List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
-            String gameIdParam = gameIdParams.get(0);
-            long gameId = 0;
-
-            try {
-                gameId = Long.parseLong(gameIdParam);
-            } catch (NumberFormatException e){
-                System.err.println("Error during convert request param: \n" + e);
-            }
+            long gameId = getGameId(requestParameters);
             Game game = gameStorage.getGame(gameId);
             if(game != null){
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -116,27 +100,29 @@ public class GameController {
                     System.err.println("Error during process request \n" + e);
                     return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error, review hasn't been added");
                 }
-
             }
-
         }
-
-
         return newFixedLengthResponse(OK, "text/plain", "Review has been successfully added ");
     }
+
+    private long getGameId(Map<String, List<String>> requestParameters) {
+        List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
+        String gameIdParam = gameIdParams.get(0);
+        long gameId = 0;
+
+        try {
+            gameId = Long.parseLong(gameIdParam);
+        } catch (NumberFormatException e) {
+            System.err.println("Error during convert request param: \n" + e);
+        }
+        return gameId;
+    }
+
     public Response serveAddRatingRequest(IHTTPSession session){
 
         Map<String, List<String>> requestParameters = session.getParameters();
         if(requestParameters.containsKey(GAME_ID_PARAM_NAME)){
-            List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
-            String gameIdParam = gameIdParams.get(0);
-            long gameId = 0;
-
-            try {
-                gameId = Long.parseLong(gameIdParam);
-            } catch (NumberFormatException e){
-                System.err.println("Error during convert request param: \n" + e);
-            }
+            long gameId = getGameId(requestParameters);
             Game game = gameStorage.getGame(gameId);
             if(game != null){
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -155,9 +141,7 @@ public class GameController {
                     return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error, review hasn't been added");
                 }
             }
-
         }
         return newFixedLengthResponse(OK, "text/plain", "Rating has been successfully added ");
     }
-
 }
