@@ -26,7 +26,7 @@ public class RequestUrlMapper {
         } else if (GET.equals(session.getMethod()) && GET_ALL_GAME_URL.equals(session.getUri())) {
             return gameController.serveGetGamesRequest(session);
         } else if(GET.equals(session.getMethod()) && GET_GAME_URL.equals(session.getUri())){
-            return gameController.serveAddGameRequest(session);
+            return gameController.serveGetGameRequest(session);
         } else if(POST.equals(session.getMethod()) && ADD_GAME_REVIEW_URL.equals(session.getUri())){
             return gameController.serveAddReviewRequest(session);
         } else if (POST.equals(session.getMethod()) && ADD_GAME_RATING_URL.equals(session.getUri())){

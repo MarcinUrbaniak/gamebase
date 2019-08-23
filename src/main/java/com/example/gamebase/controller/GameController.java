@@ -8,17 +8,45 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 
-import static fi.iki.elonen.NanoHTTPD.Response.Status.OK;
+import java.util.List;
+import java.util.Map;
+
+import static fi.iki.elonen.NanoHTTPD.Response.Status.*;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
-import static fi.iki.elonen.NanoHTTPD.Response.Status.INTERNAL_ERROR;
 
 
 public class GameController {
 
+    private final static String GAME_ID_PARAM_NAME = "bookID";
     private GameStorage gameStorage = new StaticListGameStorageImpl();
 
     public Response serveGetGameRequest(IHTTPSession session){
-        return null;
+        Map<String, List<String>> requestParameters = session.getParameters();
+        if(requestParameters.containsKey(GAME_ID_PARAM_NAME)){
+            List<String> gameIdParams = requestParameters.get(GAME_ID_PARAM_NAME);
+            String gameParam = gameIdParams.get(0);
+            long gameId = 0;
+
+            try {
+                gameId = Long.parseLong(gameParam);
+            }catch (NumberFormatException e){
+                System.err.println("Error during convert request param: \n" + e);
+            }
+            Game game = gameStorage.getGame(gameId);
+            if(game != null){
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String response = objectMapper.writeValueAsString(game);
+                    return newFixedLengthResponse(OK, "application/json", response);
+                }catch (JsonProcessingException e){
+                    System.err.println("Error during process request: \n " + e);
+                    return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error: can't read all games");
+                }
+            }
+            return newFixedLengthResponse(NOT_FOUND, "text/plain", "");
+        }
+
+        return newFixedLengthResponse(BAD_REQUEST, "text/plain", "Uncorrect request params.");
     }
 
     public Response serveGetGamesRequest(IHTTPSession session){
