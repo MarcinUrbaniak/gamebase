@@ -2,6 +2,8 @@ package com.example.gamebase.storage.impl;
 
 import com.example.gamebase.storage.GameStorage;
 import com.example.gamebase.type.Game;
+import com.example.gamebase.type.GameRating;
+import com.example.gamebase.type.GameReview;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -24,11 +26,28 @@ public class StaticListGameStorageImpl implements GameStorage {
 
     @Override
     public List<Game> getAllGames() {
-        return null;
+        return gameStorage;
     }
 
     @Override
     public void addGame(Game game) {
+        gameStorage.add(game);
 
+    }
+
+    public void addReview(GameReview gameReview, long gameId){
+        for(Game game:gameStorage){
+            if(game.getId() == gameId){
+                game.getReviews().add(gameReview);
+            }
+        }
+    }
+
+    public void addRating(GameRating gameRating, long gameId){
+        for(Game game: gameStorage){
+            if(game.getId() == gameId){
+                game.getRatings().add(gameRating);
+            }
+        }
     }
 }

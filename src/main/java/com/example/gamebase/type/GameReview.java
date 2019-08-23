@@ -13,5 +13,5 @@ public class GameReview {
 
     private long id;
     private String nick;
-    private String rewiew;
+    private String review;
 }
