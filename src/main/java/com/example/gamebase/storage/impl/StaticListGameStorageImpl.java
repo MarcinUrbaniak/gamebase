@@ -13,6 +13,8 @@ import java.util.List;
 public class StaticListGameStorageImpl implements GameStorage {
 
     private static List<Game> gameStorage = new ArrayList<Game>();
+    private static List<GameReview> gameReviews = new ArrayList<GameReview>();
+    private static List<GameRating> gameRatings = new ArrayList<GameRating>();
 
     @Override
     public Game getGame(long id) {
@@ -34,19 +36,21 @@ public class StaticListGameStorageImpl implements GameStorage {
         gameStorage.add(game);
 
     }
-
+    @Override
     public void addReview(GameReview gameReview, long gameId){
         for(Game game:gameStorage){
             if(game.getId() == gameId){
-                game.getReviews().add(gameReview);
+                gameReviews.add(gameReview);
+                game.setReviews(gameReviews);
             }
         }
     }
-
+    @Override
     public void addRating(GameRating gameRating, long gameId){
         for(Game game: gameStorage){
             if(game.getId() == gameId){
-                game.getRatings().add(gameRating);
+                gameRatings.add(gameRating);
+                game.setRatings(gameRatings);
             }
         }
     }

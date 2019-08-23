@@ -14,6 +14,7 @@ public class GameRating {
     public void setRating(long rating) {
         if(rating >= 1 && rating <=10){
             this.rating = rating;
-        }
+            //Jesli rating spoza zakresu - nadaj wartosc -1
+        } else this.rating = -1;
     }
 }
