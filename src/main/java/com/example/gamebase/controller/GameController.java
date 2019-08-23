@@ -101,6 +101,7 @@ public class GameController {
                     return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error, review hasn't been added");
                 }
             }
+            else return newFixedLengthResponse(NOT_FOUND, "application/json", "" );
         }
         return newFixedLengthResponse(OK, "text/plain", "Review has been successfully added ");
     }
@@ -141,6 +142,7 @@ public class GameController {
                     return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error, review hasn't been added");
                 }
             }
+             else return newFixedLengthResponse(NOT_FOUND, "application/json", "" );
         }
         return newFixedLengthResponse(OK, "text/plain", "Rating has been successfully added ");
     }
