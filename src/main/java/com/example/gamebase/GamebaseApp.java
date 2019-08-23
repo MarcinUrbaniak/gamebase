@@ -13,6 +13,11 @@ public class GamebaseApp extends NanoHTTPD {
         System.out.println("Server has been started");
     }
 
+    @Override
+    public Response serve(IHTTPSession session){
+        return null;
+    }
+
     public static void main(String[] args) {
         try {
             new GamebaseApp(8080);
